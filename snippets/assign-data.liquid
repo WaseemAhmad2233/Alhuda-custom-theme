@@ -1,0 +1,7 @@
+{% assign page_width_class = '' %}
+
+{% if settings.max_page_width == '90rem' %}
+  {% assign page_width_class = 'page-width' %}
+{% elsif settings.max_page_width == '110rem' %}
+  {% assign page_width_class = 'wide-page-width' %}
+{% endif %}

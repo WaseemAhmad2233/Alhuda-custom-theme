@@ -1,0 +1,418 @@
+
+{{ 'image-with-text.css' | asset_url | stylesheet_tag }}
+<div class="sn-section-wrapper custom-footer color-{{ section.settings.color_scheme }} section-wrapper">
+  
+  <!-- DESKTOP LAYOUT (Unchanged logic) -->
+  <div class="sn-desktop-wrapper">
+    <div class="sn-container">
+      {% for block in section.blocks %}
+        <div class="sn-row sn-layout-{{ block.settings.image_position }}" {{ block.shopify_attributes }}>
+          
+          <div class="sn-col-image">
+            <div class="sn-aspect-box">
+              {% if block.settings.main_image != blank %}
+                <img src="{{ block.settings.main_image | image_url: width: 1000 }}" 
+                     loading="lazy" 
+                     alt="{{ block.settings.main_image.alt | escape }}"
+                     width="{{ block.settings.main_image.width }}"
+                     height="{{ block.settings.main_image.height }}">
+              {% else %}
+                 {{ 'image' | placeholder_svg_tag: 'sn-placeholder' }}
+              {% endif %}
+            </div>
+
+            {% if block.settings.overlay_image != blank %}
+              <img class="sn-float-img" 
+                   src="{{ block.settings.overlay_image | image_url: width: 400 }}" 
+                   loading="lazy" 
+                   alt="Detail Icon">
+            {% endif %}
+          </div>
+
+          <div class="sn-col-text">
+            <div class="sn-content-inner align-{{ block.settings.text_alignment }}">
+              {% if block.settings.heading != blank %}
+                <h3 class="sn-heading">{{ block.settings.heading }}</h3>
+              {% endif %}
+              
+              {% if section.settings.content_visibility == 'both' %}
+                {% if block.settings.text != blank %}
+                  <div class="sn-desc">{{ block.settings.text }}</div>
+                {% endif %}
+              {% endif %}
+            </div>
+          </div>
+
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- MOBILE LAYOUT -->
+  <div class="sn-mobile-wrapper sn-mobile-pos-{{ section.settings.mobile_slider_position }}">
+    
+    {% if section.settings.mobile_layout_type == 'slider' %}
+      
+      <!-- Option 1: SLIDER (Existing Logic) -->
+      <div class="sn-mobile-bg-stack">
+        {% for block in section.blocks %}
+          {% assign mob_img = block.settings.mobile_image | default: block.settings.main_image %}
+          <div class="sn-bg-slide {% if forloop.first %}active{% endif %}" data-index="{{ forloop.index0 }}">
+            {% if mob_img != blank %}
+              <img src="{{ mob_img | image_url: width: 800 }}" 
+                   loading="lazy" 
+                   alt="Background {{ forloop.index }}">
+            {% else %}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'sn-placeholder-svg' }}
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="sn-swiper-container swiper" id="sn-swiper-{{ section.id }}">
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            <div class="swiper-slide">
+              <div class="sn-mobile-card">
+                {% if block.settings.heading != blank %}
+                  <h3 class="sn-heading">{{ block.settings.heading }}</h3>
+                {% endif %}
+                
+                {% if section.settings.content_visibility == 'both' %}
+                  {% if block.settings.text != blank %}
+                    <div class="sn-desc">{{ block.settings.text }}</div>
+                  {% endif %}
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+
+    {% else %}
+
+      <!-- Option 2: STACKED (Simple List) -->
+      <div class="sn-mobile-stacked-container">
+        {% for block in section.blocks %}
+          {% assign mob_img = block.settings.mobile_image | default: block.settings.main_image %}
+          <div class="sn-mobile-stacked-item" {{ block.shopify_attributes }}>
+            <div class="sn-stack-img">
+              {% if mob_img != blank %}
+                <img src="{{ mob_img | image_url: width: 800 }}" 
+                     loading="lazy" 
+                     width="{{ mob_img.width }}"
+                     height="{{ mob_img.height }}"
+                     alt="{{ mob_img.alt | escape }}">
+              {% else %}
+                {{ 'image' | placeholder_svg_tag: 'sn-placeholder-svg' }}
+              {% endif %}
+            </div>
+            <div class="sn-stack-content">
+              {% if block.settings.heading != blank %}
+                <h3 class="sn-heading">{{ block.settings.heading }}</h3>
+              {% endif %}
+              {% if section.settings.content_visibility == 'both' and block.settings.text != blank %}
+                <div class="sn-desc">{{ block.settings.text }}</div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+    {% endif %}
+
+  </div>
+</div>
+
+{% comment %} 
+  Performance Load: Only load Swiper JS if the mobile layout is set to slider.
+{% endcomment %}
+{% if section.settings.mobile_layout_type == 'slider' %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      initSwiper{{ section.id | replace: '-', '' }}();
+    });
+
+    // Handle Shopify Theme Editor Events
+    document.addEventListener('shopify:section:load', function (e) {
+      if (e.target.id === 'shopify-section-{{ section.id }}') {
+        initSwiper{{ section.id | replace: '-', '' }}();
+      }
+    });
+
+    function initSwiper{{ section.id | replace: '-', '' }}() {
+      const swiperEl = document.querySelector('#sn-swiper-{{ section.id }}');
+      if (!swiperEl) return;
+
+      const bgSlides = document.querySelectorAll('#shopify-section-{{ section.id }} .sn-bg-slide');
+
+      // Check if swiper instance already exists and destroy it to avoid conflict
+      if (swiperEl.swiper) {
+        swiperEl.swiper.destroy();
+      }
+
+      // Wait for library if deferred
+      if (typeof Swiper === 'undefined') {
+        setTimeout(initSwiper{{ section.id | replace: '-', '' }}, 100);
+        return;
+      }
+
+      new Swiper(swiperEl, {
+        loop: true,
+        autoHeight: true,
+        pagination: { 
+          el: '.swiper-pagination', 
+          clickable: true, 
+          type: 'bullets' 
+        },
+        navigation: false,
+        on: {
+          slideChange: function () {
+            let currentIndex = this.realIndex;
+            bgSlides.forEach((slide, index) => {
+              if (index === currentIndex) {
+                slide.classList.add('active');
+              } else {
+                slide.classList.remove('active');
+              }
+            });
+          }
+        }
+      });
+    }
+  </script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Image With Text",
+  "settings": [
+     {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt_desk",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Desktop Top Spacing",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "pb_desk",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Desktop Bottom Spacing",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "pt_mob",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Mobile Top Spacing",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "pb_mob",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Mobile Bottom Spacing",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Desktop Settings"
+    },
+    {
+      "type": "select",
+      "id": "desktop_image_alignment",
+      "label": "Image Crop Position",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Layout"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Enable Full Width (Desktop)",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    }, 
+    {
+      "type": "select",
+      "id": "content_visibility",
+      "label": "Content to Show",
+      "options": [
+        { "value": "both", "label": "Title & Description" },
+        { "value": "title_only", "label": "Title Only" }
+      ],
+      "default": "both"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Description Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Settings"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout_type",
+      "label": "Mobile Layout Mode",
+      "options": [
+        { "value": "slider", "label": "Slider" },
+        { "value": "stacked", "label": "Simple Stacked" }
+      ],
+      "default": "slider",
+      "info": "Choose 'Slider' for swipeable images or 'Simple Stacked' for a long scrollable list."
+    },
+    {
+      "type": "select",
+      "id": "mobile_slider_position",
+      "label": "Mobile Slider Text Position",
+      "options": [
+        { "value": "overlap", "label": "Overlap on Image" },
+        { "value": "below", "label": "Below Image" }
+      ],
+      "default": "overlap",
+      "info": "Only applies if Layout Mode is set to 'Slider'."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "content_row",
+      "name": "Content Row",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Images"
+        },
+        {
+          "type": "image_picker",
+          "id": "main_image",
+          "label": "Desktop Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image (Optional)",
+          "info": "Use this for a portrait version on mobile. If empty, Desktop image is used."
+        },
+        {
+          "type": "image_picker",
+          "id": "overlay_image",
+          "label": "Floating Icon (Desktop Only)"
+        },
+        {
+          "type": "header",
+          "content": "Desktop Position"
+        },
+        {
+          "type": "select",
+          "id": "image_position",
+          "label": "Image Placement",
+          "options": [
+            { "value": "left", "label": "Image Left" },
+            { "value": "right", "label": "Image Right" }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+         {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Your Heading Here"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Content",
+          "default": "<p>Write your detailed product description here.</p>"
+        }
+       
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image With Text",
+      "blocks": [
+        {
+          "type": "content_row",
+          "settings": {
+            "heading": "Perfect fit"
+          }
+        },
+        {
+          "type": "content_row",
+          "settings": {
+            "heading": "Start-up support"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

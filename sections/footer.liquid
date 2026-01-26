@@ -1,0 +1,919 @@
+{% comment %} <style>
+
+  .footer-section-{{ section.id }} {
+    padding: 60px 20px 20px;
+    overflow: hidden;
+    content-visibility: auto; 
+  }
+
+  .cf-container {
+    margin: 0 auto;
+    width: 100%;
+    padding: 40px 20px;
+  }
+
+  .cf-full-width {
+    max-width: 100% !important;
+    padding: 0 40px;
+  }
+
+
+  .cf-top-wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+  }
+
+  .cf-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+ 
+  .cf-accordion-trigger {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: default;
+    padding: 0;
+    color: inherit;
+    font-family: inherit;
+  }
+
+  .cf-icon {
+    display: none;
+    transition: transform 0.3s ease;
+  }
+
+
+  .cf-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .cf-menu li {
+    margin-bottom: 12px;
+  }
+  .cf-menu a {
+    text-decoration: none;
+    color: inherit;
+    opacity: 0.8;
+    font-size: 14px;
+    transition: opacity 0.3s;
+  }
+  .cf-menu a:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+
+  .cf-app-badges {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+  .cf-app-badges img {
+    max-width: 120px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .cf-payment-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .cf-pay-svg {
+    width: 38px;
+    height: 24px;
+  }
+
+
+  .cf-big-logo-container {
+    margin: 60px 0 40px;
+    text-align: left;
+    opacity: 0.15; 
+    transition: opacity 0.3s;
+  }
+  .cf-big-logo-container:hover {
+    opacity: 0.3;
+  }
+  .cf-footer-big-img {
+    width: 75%;
+    height: auto;
+    display: block;
+    max-width: 100%;
+  }
+
+
+  .cf-bottom-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+
+  .cf-copyright {
+    font-size: 16px;
+    opacity: 0.6;
+  }
+
+
+  .SocialMediaIcons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+  .SocialMediaIcons a:hover {
+    transform: scale(1.1);
+  }
+
+
+  @media (max-width: 999px) {
+    .cf-footer-big-img { width: 100%; }
+  }
+
+  @media (max-width: 767px) {
+    .footer-section-{{ section.id }} { padding: 30px 20px; }
+    .cf-full-width { padding: 0 20px; }
+    .cf-top-wrapper { grid-template-columns: 1fr; gap: 0; }
+    
+    .cf-block {
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .cf-accordion-trigger {
+      padding: 15px 0;
+      margin-bottom: 0;
+      cursor: pointer;
+    }
+    .cf-icon { display: block; }
+    
+    .cf-accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0;
+    }
+    
+    .cf-block.is-open .cf-accordion-content {
+      max-height: 500px;
+      padding-bottom: 20px;
+      opacity: 1;
+    }
+    .cf-block.is-open .cf-icon { transform: rotate(180deg); }
+    
+    .cf-apps-payments {
+      border-bottom: none;
+      padding-top: 30px;
+    }
+    
+    .cf-bottom-bar {
+      flex-direction: column-reverse;
+      gap: 20px;
+      text-align: center;
+      padding-top: 20px;
+    }
+    .cf-big-logo-container { margin: 20px 0 0px; }
+      .cf-container {padding: 20px 20px;}
+  }
+</style>
+
+
+<div class="footer-section-{{ section.id }} custom-footer color-{{ section.settings.color_scheme }} section-wrapper">
+  <div class="cf-container {% if section.settings.full_width %}page-width{% endif %}">
+    
+    <div class="cf-top-wrapper">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'link_list' %}
+          <div class="cf-block cf-links" {{ block.shopify_attributes }}>
+            <button class="cf-accordion-trigger" aria-expanded="false">
+              {{ block.settings.title }}
+              <span class="cf-icon">
+                <svg width="12" height="8" viewBox="0 0 10 6" fill="none">
+                  <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+            <div class="cf-accordion-content">
+              <ul class="cf-menu">
+                {% if linklists[block.settings.menu].links.size > 0 %}
+                  {% for link in linklists[block.settings.menu].links %}
+                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                  {% endfor %}
+                {% else %}
+                  <li><a href="#">Shipping Policy</a></li>
+                  <li><a href="#">Returns & Refunds</a></li>
+                  <li><a href="#">Contact Us</a></li>
+                  <li><a href="#">About Us</a></li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+          
+          {% when 'apps_payments' %}
+          <div class="cf-block cf-apps-payments" {{ block.shopify_attributes }}>
+            {% if block.settings.app_title != blank %}
+            <div class="cf-app-section">
+              <h3 class="cf-title">{{ block.settings.app_title }}</h3>
+              <div class="cf-app-badges">
+                {% if block.settings.apple_img != blank %}
+                  <a href="{{ block.settings.apple_link }}">
+                    <img src="{{ block.settings.apple_img | image_url: width: 220 }}" alt="App Store" loading="lazy" width="110" height="35">
+                  </a>
+                {% endif %}
+                {% if block.settings.google_img != blank %}
+                  <a href="{{ block.settings.google_link }}">
+                    <img src="{{ block.settings.google_img | image_url: width: 220 }}" alt="Play Store" loading="lazy" width="110" height="35">
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+            {% endif %}
+            
+            <div class="cf-payment-section">
+              <h3 class="cf-title">{{ block.settings.pay_title }}</h3>
+              <div class="cf-payment-icons">
+                {% for type in shop.enabled_payment_types %}
+                  <div class="cf-payment-icon-item">
+                    {{ type | payment_type_svg_tag: class: 'cf-pay-svg' }}
+                  </div>
+                {% else %}
+                   {{ 'visa' | payment_type_svg_tag: class: 'cf-pay-svg' }}
+                   {{ 'master' | payment_type_svg_tag: class: 'cf-pay-svg' }}
+                   {{ 'paypal' | payment_type_svg_tag: class: 'cf-pay-svg' }}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+
+    <div class="cf-big-logo-container">
+      {% if section.settings.footer_big_logo != blank %}
+        {{ section.settings.footer_big_logo | image_url: width: 2000 | image_tag: class: 'cf-footer-big-img', loading: 'lazy' }}
+      {% else %}
+        <!-- Placeholder for Big Logo -->
+        <h2 style="font-size: 80px; opacity: 1; line-height: 1; margin: 0; text-transform: uppercase;">{{ shop.name }}</h2>
+      {% endif %}
+    </div>
+
+    <div class="cf-bottom-bar">
+      <div class="cf-copyright">
+        &copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. All rights reserved.
+      </div>
+      
+      <div class="cf-social-container">
+        <ul class="SocialMediaIcons u-NoList">
+          {% render 'social-icons' %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Footer Pro",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Large Footer Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_big_logo",
+      "label": "Large Background Logo"
+    },
+    {
+      "type": "header",
+      "content": "Social Media URLs"
+    },
+    {
+      "type": "url",
+      "id": "social_instagram",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "social_facebook",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "social_tiktok",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "url",
+      "id": "social_whatsapp",
+      "label": "WhatsApp URL"
+    },
+    {
+      "type": "url",
+      "id": "social_pinterest",
+      "label": "Pinterest URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Menu Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Quick Links"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Select Menu"
+        }
+      ]
+    },
+    {
+      "type": "apps_payments",
+      "name": "Apps & Payments",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "app_title",
+          "label": "App Heading",
+          "default": "Download Our App"
+        },
+        {
+          "type": "image_picker",
+          "id": "apple_img",
+          "label": "Apple Store Badge"
+        },
+        {
+          "type": "url",
+          "id": "apple_link",
+          "label": "Apple Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "google_img",
+          "label": "Play Store Badge"
+        },
+        {
+          "type": "url",
+          "id": "google_link",
+          "label": "Google Link"
+        },
+        {
+          "type": "text",
+          "id": "pay_title",
+          "label": "Payment Heading",
+          "default": "Secure Payment"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer Pro",
+      "blocks": [
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "Shop"
+          }
+        },
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "Support"
+          }
+        },
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "Company"
+          }
+        },
+        {
+          "type": "apps_payments"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} {% endcomment %}
+
+
+{% style %}
+  .footer-section-{{ section.id }} {
+    padding: 60px 20px 20px;
+    overflow: hidden;
+    content-visibility: auto; 
+  }
+
+  .cf-container {
+    margin: 0 auto;
+    width: 100%;
+    max-width: {{ section.settings.container_max_width }}px;
+  }
+
+  .cf-full-width {
+    max-width: 100% !important;
+    padding: 0 40px;
+  }
+
+
+  .cf-top-wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+  }
+
+  .cf-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+ 
+  .cf-accordion-trigger {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: default;
+    padding: 0;
+    color: inherit;
+    font-family: inherit;
+  }
+
+  .cf-icon {
+    display: none;
+    transition: transform 0.3s ease;
+  }
+
+
+  .cf-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .cf-menu li {
+    margin-bottom: 12px;
+  }
+  .cf-menu a {
+    text-decoration: none;
+    color: inherit;
+    opacity: 0.8;
+    font-size: 14px;
+    transition: opacity 0.3s;
+  }
+  .cf-menu a:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+
+  .cf-app-badges {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+  .cf-app-badges img {
+    max-width: 120px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .cf-payment-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .cf-pay-svg {
+    width: 38px;
+    height: 24px;
+  }
+
+
+  .cf-big-logo-container {
+    margin: 60px 0 40px;
+    text-align: left;
+    opacity: 0.15; 
+    transition: opacity 0.3s;
+  }
+  .cf-big-logo-container:hover {
+    opacity: 0.3;
+  }
+  .cf-footer-big-img {
+    width: 75%;
+    height: auto;
+    display: block;
+    max-width: 100%;
+  }
+
+
+  .cf-bottom-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+
+  .cf-copyright {
+    font-size: 12px;
+    opacity: 0.6;
+  }
+
+
+  .SocialMediaIcons {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+  .SocialMediaIcons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+  .SocialMediaIcons a:hover {
+    transform: scale(1.1);
+  }
+  .SocialMediaIcons svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  @media (max-width: 999px) {
+    .cf-footer-big-img { width: 100%; }
+  }
+
+  @media (max-width: 767px) {
+    .footer-section-{{ section.id }} { padding: 30px 20px; }
+    .cf-full-width { padding: 0 0px; }
+    .cf-top-wrapper { grid-template-columns: 1fr; gap: 0; }
+    
+    .cf-block {
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    {% if section.settings.icon_color_white %}
+      .cf-block { border-bottom: 1px solid rgba(255,255,255,0.1); }
+    {% endif %}
+
+    .cf-accordion-trigger {
+      padding: 15px 0;
+      margin-bottom: 0;
+      cursor: pointer;
+    }
+    .cf-icon { display: block; }
+    
+    .cf-accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0;
+    }
+    
+    .cf-block.is-open .cf-accordion-content {
+      max-height: 500px;
+      padding-bottom: 20px;
+      opacity: 1;
+    }
+    .cf-block.is-open .cf-icon { transform: rotate(180deg); }
+    
+    .cf-apps-payments {
+      border-bottom: none;
+      padding-top: 30px;
+    }
+    
+    .cf-bottom-bar {
+      flex-direction: column-reverse;
+      gap: 20px;
+      text-align: center;
+      padding-top: 20px;
+    }
+    .cf-big-logo-container { margin: 20px 0 0px; }
+  }
+{% endstyle %}
+
+
+<div class="footer-section-{{ section.id }} custom-footer custom-footer color-{{ section.settings.color_scheme }} section-wrapper">
+  <div class="cf-container {% if section.settings.full_width %}cf-full-width{% endif %}">
+    
+    <div class="cf-top-wrapper">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'link_list' %}
+          <div class="cf-block cf-links" {{ block.shopify_attributes }}>
+            <button class="cf-accordion-trigger" aria-expanded="false">
+              {{ block.settings.title }}
+              <span class="cf-icon">
+                <svg width="12" height="8" viewBox="0 0 10 6" fill="none">
+                  <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </button>
+            <div class="cf-accordion-content">
+              <ul class="cf-menu">
+                {% if linklists[block.settings.menu].links.size > 0 %}
+                  {% for link in linklists[block.settings.menu].links %}
+                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                  {% endfor %}
+                {% else %}
+                  <li><a href="#">Shipping Policy</a></li>
+                  <li><a href="#">Returns & Refunds</a></li>
+                  <li><a href="#">Contact Us</a></li>
+                  <li><a href="#">About Us</a></li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+          
+          {% when 'apps_payments' %}
+          <div class="cf-block cf-apps-payments" {{ block.shopify_attributes }}>
+            {% if block.settings.app_title != blank %}
+            <div class="cf-app-section">
+              <h3 class="cf-title">{{ block.settings.app_title }}</h3>
+              <div class="cf-app-badges">
+                {% if block.settings.apple_img != blank %}
+                  <a href="{{ block.settings.apple_link }}">
+                    <img src="{{ block.settings.apple_img | image_url: width: 220 }}" alt="App Store" loading="lazy" width="110" height="35">
+                  </a>
+                {% endif %}
+                {% if block.settings.google_img != blank %}
+                  <a href="{{ block.settings.google_link }}">
+                    <img src="{{ block.settings.google_img | image_url: width: 220 }}" alt="Play Store" loading="lazy" width="110" height="35">
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+            {% endif %}
+            
+            <div class="cf-payment-section">
+              <h3 class="cf-title">{{ block.settings.pay_title }}</h3>
+              <div class="cf-payment-icons">
+                {% for type in shop.enabled_payment_types %}
+                  <div class="cf-payment-icon-item">
+                    {{ type | payment_type_svg_tag: class: 'cf-pay-svg' }}
+                  </div>
+                {% else %}
+                   {{ 'visa' | payment_type_svg_tag: class: 'cf-pay-svg' }}
+                   {{ 'master' | payment_type_svg_tag: class: 'cf-pay-svg' }}
+                   {{ 'paypal' | payment_type_svg_tag: class: 'cf-pay-svg' }}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+
+    <div class="cf-big-logo-container">
+      {% if section.settings.footer_big_logo != blank %}
+        {{ section.settings.footer_big_logo | image_url: width: 2000 | image_tag: class: 'cf-footer-big-img', loading: 'lazy' }}
+      {% else %}
+        <!-- Placeholder for Big Logo -->
+        <h2 style="font-size: 80px; opacity: 0.1; line-height: 1; margin: 0; text-transform: uppercase;">{{ shop.name }}</h2>
+      {% endif %}
+    </div>
+
+    <div class="cf-bottom-bar">
+      <div class="cf-copyright">
+        &copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. All rights reserved.
+      </div>
+      
+      <div class="cf-social-container">
+        <ul class="SocialMediaIcons u-NoList">
+         {% render 'social-icons' %}
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Custom Footer Pro",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false
+    },
+        {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1400
+    },
+  
+    {
+      "type": "checkbox",
+      "id": "icon_color_white",
+      "label": "Force Icons/Lines to White",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Klaviyo Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_klaviyo",
+      "label": "Enable Klaviyo Form",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_id",
+      "label": "Klaviyo Public API Key",
+      "info": "Found in Klaviyo Account Settings"
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_form_id",
+      "label": "Klaviyo Form Embed Class",
+      "default": "SNeXzW",
+      "info": "The random string in the div class"
+    },
+    {
+      "type": "header",
+      "content": "Large Footer Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_big_logo",
+      "label": "Large Background Logo"
+    },
+    {
+      "type": "header",
+      "content": "Social Media URLs"
+    },
+    {
+      "type": "url",
+      "id": "social_instagram",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "social_facebook",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "social_tiktok",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "url",
+      "id": "social_whatsapp",
+      "label": "WhatsApp URL"
+    },
+    {
+      "type": "url",
+      "id": "social_pinterest",
+      "label": "Pinterest URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Menu Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Quick Links"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Select Menu"
+        }
+      ]
+    },
+    {
+      "type": "apps_payments",
+      "name": "Apps & Payments",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "app_title",
+          "label": "App Heading",
+          "default": "Download Our App"
+        },
+        {
+          "type": "image_picker",
+          "id": "apple_img",
+          "label": "Apple Store Badge"
+        },
+        {
+          "type": "url",
+          "id": "apple_link",
+          "label": "Apple Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "google_img",
+          "label": "Play Store Badge"
+        },
+        {
+          "type": "url",
+          "id": "google_link",
+          "label": "Google Link"
+        },
+        {
+          "type": "text",
+          "id": "pay_title",
+          "label": "Payment Heading",
+          "default": "Secure Payment"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Footer Pro",
+      "blocks": [
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "Shop"
+          }
+        },
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "Support"
+          }
+        },
+        {
+          "type": "link_list",
+          "settings": {
+            "title": "Company"
+          }
+        },
+        {
+          "type": "apps_payments"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

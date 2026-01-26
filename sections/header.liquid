@@ -1,0 +1,512 @@
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
+
+<style>
+  .fa, .fas {
+  font-weight: normal!important;font-size: 20px;
+}
+  .section-alhuda-header {
+    --logo-width: {{ section.settings.logo_width }}px;
+    --header-opacity: {{ section.settings.bg_opacity | divided_by: 100.0 }};
+    --color-text: rgb(var(--color-background));
+    --alhuda-bg-rgb: var(--color-background); 
+    --alhuda-border: rgba(var(--color-background), 0.1);
+    --alhuda-glass-bg: rgba(var(--alhuda-bg-rgb), var(--header-opacity));
+  }
+  .alhuda-header-wrapper * {
+    box-sizing: border-box;
+  }
+  .alhuda-header-wrapper {
+    position: relative;
+    z-index: 1000;
+  }
+  .alhuda-header {
+    width: 100%;
+    transition: all 0.3s ease;
+    background: var(--color-background);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--color-background);
+    color: var(--color-text);
+  }
+  {% if section.settings.enable_sticky %}
+  .alhuda-header.is-sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+    animation: slideDown 0.3s ease-out;
+  }
+  @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+  {% else %}
+  .alhuda-header { position: relative; }
+  {% endif %}
+
+  .alhuda-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .alhuda-header-inner {
+    display: flex;
+    align-items: center;
+    min-height: 80px;
+    padding: 15px 0;
+  }
+  .alhuda-logo {
+    display: block;
+    text-decoration: none;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .alhuda-logo img {
+    width: var(--logo-width);
+    height: auto;
+    display: block;
+  }
+  .alhuda-nav-links {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .alhuda-link {
+    text-decoration: none;
+    color: var(--color-text);
+    opacity: 0.8;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: 0.3s;
+    position: relative;
+  }
+  .alhuda-link:hover, .alhuda-link.active {
+    opacity: 1;
+  }
+  .alhuda-link::after {
+    content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px;
+    background: currentColor; transition: 0.3s;
+  }
+  .alhuda-link:hover::after { width: 100%; }
+  .alhuda-icons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  .alhuda-icon-btn {
+    background: none;
+    border: none;
+    color: var(--color-text);
+    font-size: 1.3rem;
+    cursor: pointer;
+    position: relative;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+  .alhuda-icon-btn:hover { transform: scale(1.1); opacity: 0.7; }
+  
+  .alhuda-cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--color-text);
+    color: rgb(var(--color-background)); 
+    font-size: 0.7rem;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+
+
+  .alhuda-search-bar {
+    display: flex;
+    align-items: center;
+ background: rgba(var(--color-background), 0.05); 
+    border: 1px solid var(--color-text);
+    border-radius: 50px;
+    padding: 5px 15px;
+    width: 100%;
+    max-width: 250px;
+  }
+  .alhuda-search-bar input {
+    background: transparent;
+    border: none;
+    color: var(--color-text);
+    width: 100%;
+    outline: none;
+    padding: 5px;
+  }
+  .alhuda-search-bar button {
+    background: none;
+    border: none;
+    color: var(--color-text);
+    cursor: pointer;
+  }
+
+
+  .alhuda-hamburger {
+    display: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: var(--color-text);
+    padding: 0;
+  }
+
+
+  .layout-standard .alhuda-header-inner { justify-content: space-between; }
+  .layout-standard .nav-area { flex: 1; display: flex; justify-content: center; }
+
+
+  .layout-logo_center .alhuda-header-inner { display: grid; grid-template-columns: 1fr auto 1fr; }
+  .layout-logo_center .nav-area { justify-content: flex-start; }
+  .layout-logo_center .logo-area { text-align: center; }
+  .layout-logo_center .icons-area { justify-content: flex-end; }
+  .layout-nav_below .alhuda-header-inner { flex-wrap: wrap; }
+  .layout-nav_below .top-row { 
+    width: 100%; 
+    display: flex; 
+    align-items: center; 
+    margin-bottom: 15px; 
+  }
+  
+  .layout-nav_below .top-row > div {
+    flex: 1;
+    width: 33.33%;
+  }
+  .layout-nav_below .left-area { display: flex; justify-content: flex-start; }
+  .layout-nav_below .logo-area { display: flex; justify-content: center; }
+  .layout-nav_below .icons-area { display: flex; justify-content: flex-end; }
+
+  .layout-nav_below .bottom-row { width: 100%; border-top: 1px solid var(--alhuda-border); padding-top: 15px; display: flex; justify-content: center; }
+  .layout-nav_below .alhuda-search-bar { display: flex; }
+  .layout-drawer_desktop .alhuda-header-inner { justify-content: space-between; }
+  .layout-drawer_desktop .alhuda-hamburger { display: block; margin-right: 20px; }
+  .layout-drawer_desktop .nav-area { display: none; } 
+  .layout-drawer_desktop .logo-area { flex: 1; text-align: center; }
+  .layout-drawer_desktop .logo-area .alhuda-logo { margin: 0 auto; }
+
+  .alhuda-drawer-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000;
+    opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(5px);
+  }
+  .alhuda-drawer-overlay.active { opacity: 1; visibility: visible; }
+
+  .alhuda-drawer {
+    position: fixed; top: 0; left: -100%; width: 85%; max-width: 350px; height: 100vh;
+    background: var(--color-background); 
+    color: var(--color-text);
+    z-index: 2001; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-right: 1px solid var(--alhuda-border); display: flex; flex-direction: column; padding: 20px 20px;
+  }
+  .alhuda-drawer.active { left: 0; }
+
+  .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0px; border-bottom: 1px solid var(--alhuda-border); padding-bottom: 20px; }
+  .drawer-close { background: none; border: none; color: var(--color-text); font-size: 1.5rem; cursor: pointer; position: relative; top: -3px;}
+  
+  .mobile-nav-links { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px; }
+  .mobile-nav-links a { color: var(--color-text);text-decoration: none; font-size: 1.2rem; display: block; }
+  .mobile-nav-links a:hover { opacity: 0.7; padding-left: 10px; transition: 0.3s; }
+
+
+  @media (max-width: 992px) {
+    .alhuda-header-inner { display: flex !important; justify-content: space-between !important; flex-wrap: nowrap !important; }
+    .nav-area, .layout-nav_below .bottom-row, .alhuda-search-bar { display: none !important; }
+    .alhuda-hamburger { display: block !important; }
+    .logo-area { flex: 1; display: flex; justify-content: center; }
+    .top-row { margin-bottom: 0 !important; }
+    .layout-nav_below .top-row > div { width: 33.3%; flex: auto; }
+{% if section.settings.desktop_layout == 'standard' %}
+    .left-area.custom-area{width: 66.6%; display: flex; align-items: center;}
+    .left-area.custom-area .custom-area-left{width: 33.3%;}
+  {% elsif section.settings.desktop_layout == 'logo_center' %}
+    .left-area.custom-area{width: 33.3%;}
+    .logo-area{width: 33.3%;}
+    .layout-logo_center .icons-area{width: 33.3%;}
+    {% elsif section.settings.desktop_layout == 'nav_below' %}
+
+    {% elsif section.settings.desktop_layout == 'drawer_desktop' %}
+      .left-area.custom-area{width: 33.3%;}
+      .logo-area{width: 33.3%;}
+      .icons-area.alhuda-icons{width: 33.3%; display: flex; justify-content: end;}
+      .layout-drawer_desktop .alhuda-hamburger { margin-right: 0px;}
+  {% endif %}
+  }
+</style>
+
+<div class="alhuda-header-wrapper section-alhuda-header color-{{ section.settings.color_scheme }} section-wrapper">
+  <header class="alhuda-header color-{{ section.settings.color_scheme }} layout-{{ section.settings.desktop_layout }} {% if section.settings.enable_sticky %}sticky-enabled{% endif %}">
+    <div class="alhuda-container">
+      <div class="alhuda-header-inner">
+        {% if section.settings.desktop_layout == 'nav_below' %}
+          <div class="top-row">
+             <div class="left-area">
+               <button class="alhuda-hamburger mobile-only" onclick="toggleAlhudaDrawer()">☰</button>
+               <form action="{{ routes.search_url }}" method="get" class="alhuda-search-bar desktop-only">
+                  <input type="text" name="q" placeholder="Search...">
+                  <button type="submit">
+                    <i class="fas fa-search" style="font-size: 16px;"></i>
+                  </button>
+               </form>
+             </div>
+             
+             <div class="logo-area">
+                <a href="{{ routes.root_url }}" class="alhuda-logo">
+                 {% if section.settings.logo != blank %}
+                   <img src="{{ section.settings.logo | image_url: width: section.settings.logo_width }}" alt="{{ shop.name }}">
+                 {% else %}
+                   {{ section.settings.text_logo }}
+                 {% endif %}
+               </a>
+             </div>
+
+             <div class="icons-area alhuda-icons">
+                {% if shop.customer_accounts_enabled %}
+                  <a href="{{ routes.account_url }}" class="alhuda-icon-btn">
+                     <i class="fas fa-user"></i>
+                  </a>
+                {% endif %}
+                <a href="{{ routes.cart_url }}" class="alhuda-icon-btn">
+                   <i class="fas fa-shopping-cart"></i>
+                  {% if cart.item_count > 0 %}
+                  <span class="alhuda-cart-count">{{ cart.item_count }}</span>
+                  {% endif %}
+                </a>
+             </div>
+          </div>
+          
+        {% else %}
+             <!-- Standard, Logo Center, Drawer Layouts -->
+             <div class="left-area custom-area">
+              <div class="custom-area-left">
+               <button class="alhuda-hamburger mobile-only" onclick="toggleAlhudaDrawer()">☰</button>
+              </div>
+               {% if section.settings.desktop_layout == 'drawer_desktop' %}
+                  {% comment %} <button class="alhuda-hamburger desktop-only" onclick="toggleAlhudaDrawer()">☰</button> {% endcomment %}
+               {% endif %}
+
+               {% if section.settings.desktop_layout == 'standard' %}
+                 <div class="logo-area">
+                   <a href="{{ routes.root_url }}" class="alhuda-logo">
+                     {% if section.settings.logo != blank %}
+                       <img src="{{ section.settings.logo | image_url: width: section.settings.logo_width }}" alt="{{ shop.name }}">
+                     {% else %}
+                       {{ section.settings.text_logo }}
+                     {% endif %}
+                   </a>
+                 </div>
+               {% endif %}
+            
+               {% if section.settings.desktop_layout == 'logo_center' %}
+                 <nav class="nav-area desktop-only">
+                    <ul class="alhuda-nav-links">
+                      {% for link in linklists[section.settings.main_menu].links %}
+                        <li><a href="{{ link.url }}" class="alhuda-link {% if link.active %}active{% endif %}">{{ link.title }}</a></li>
+                      {% endfor %}
+                    </ul>
+                 </nav>
+               {% endif %}
+             </div>
+             
+             {% if section.settings.desktop_layout == 'logo_center' or section.settings.desktop_layout == 'drawer_desktop' %}
+               <div class="logo-area">
+                 <a href="{{ routes.root_url }}" class="alhuda-logo">
+                   {% if section.settings.logo != blank %}
+                     <img src="{{ section.settings.logo | image_url: width: section.settings.logo_width }}" alt="{{ shop.name }}">
+                   {% else %}
+                     {{ section.settings.text_logo }}
+                   {% endif %}
+                 </a>
+               </div>
+             {% endif %}
+
+             {% if section.settings.desktop_layout == 'standard' %}
+               <nav class="nav-area desktop-only">
+                  <ul class="alhuda-nav-links">
+                    {% for link in linklists[section.settings.main_menu].links %}
+                      <li><a href="{{ link.url }}" class="alhuda-link {% if link.active %}active{% endif %}">{{ link.title }}</a></li>
+                    {% endfor %}
+                  </ul>
+               </nav>
+             {% endif %}
+
+             <div class="icons-area alhuda-icons">
+                <a href="{{ routes.search_url }}" class="alhuda-icon-btn desktop-only">
+                  <i class="fas fa-search"></i>
+                </a>
+                {% if shop.customer_accounts_enabled %}
+                  <a href="{{ routes.account_url }}" class="alhuda-icon-btn">
+                    <i class="fas fa-user"></i>
+                  </a>
+                {% endif %}
+                <a href="{{ routes.cart_url }}" class="alhuda-icon-btn">
+                  <i class="fas fa-shopping-cart"></i>
+                  {% if cart.item_count > 0 %}
+                  <span class="alhuda-cart-count">{{ cart.item_count }}</span>
+                  {% endif %}
+                </a>
+             </div>
+        {% endif %}
+        
+        <!-- ROW 2: Navigation (Only for Nav Below Layout) -->
+        {% if section.settings.desktop_layout == 'nav_below' %}
+          <div class="bottom-row desktop-only">
+            <nav class="nav-area">
+              <ul class="alhuda-nav-links">
+                {% for link in linklists[section.settings.main_menu].links %}
+                  <li><a href="{{ link.url }}" class="alhuda-link {% if link.active %}active{% endif %}">{{ link.title }}</a></li>
+                {% endfor %}
+              </ul>
+           </nav>
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </header>
+
+  <!-- DRAWER (Global) -->
+  <div class="alhuda-drawer-overlay color-{{ section.settings.color_scheme }} section-wrapper"  id="alhudaDrawerOverlay" onclick="toggleAlhudaDrawer()"></div>
+  <aside class="alhuda-drawer color-{{ section.settings.color_scheme }}" id="alhudaDrawer">
+    <div class="drawer-header">
+      <div class="alhuda-logo">MENU</div>
+      <button class="drawer-close" onclick="toggleAlhudaDrawer()">✕</button>
+    </div>
+    <ul class="mobile-nav-links">
+      {% for link in linklists[section.settings.main_menu].links %}
+        <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+      {% endfor %}
+      {% if shop.customer_accounts_enabled %}
+        <li style="margin-top:20px; border-top:1px solid rgba(var(--color-background),0.1); padding-top:20px;">
+          <a href="{{ routes.account_url }}">My Account</a>
+        </li>
+      {% endif %}
+    </ul>
+  </aside>
+
+</div>
+
+<script>
+  function toggleAlhudaDrawer() {
+    const drawer = document.getElementById('alhudaDrawer');
+    const overlay = document.getElementById('alhudaDrawerOverlay');
+    drawer.classList.toggle('active');
+    overlay.classList.toggle('active');
+  }
+  {% if section.settings.enable_sticky %}
+  document.addEventListener("DOMContentLoaded", function() {
+    const header = document.querySelector('.alhuda-header');
+    let lastScroll = 0;
+    
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+      if (currentScroll > 50) {
+        header.classList.add('is-sticky');
+      } else {
+        header.classList.remove('is-sticky');
+      }
+      lastScroll = currentScroll;
+    });
+  });
+  {% endif %}
+</script>
+
+{% schema %}
+{
+  "name": "Alhuda Header",
+  "class": "section-alhuda-header",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "bg_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Glass Opacity",
+      "default": 85
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "desktop_layout",
+      "label": "Desktop Layout",
+      "options": [
+        { "value": "standard", "label": "Logo | Nav | Icons" },
+        { "value": "logo_center", "label": "Links | Logo | Icons" },
+        { "value": "nav_below", "label": "Search/Logo/Icons | Nav Below" },
+        { "value": "drawer_desktop", "label": "Drawer| Logo | Icons" }
+      ],
+      "default": "standard"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky",
+      "label": "Enable Sticky Header",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Branding"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo Width",
+      "default": 120
+    },
+    {
+      "type": "text",
+      "id": "text_logo",
+      "label": "Text Logo (Fallback)",
+      "default": "ALHUDA"
+    },
+    {
+      "type": "header",
+      "content": "Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "main_menu",
+      "label": "Main Menu",
+      "default": "main-menu"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Alhuda Header",
+      "category": "Header"
+    }
+  ]
+}
+{% endschema %}

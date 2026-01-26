@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+
+    {% render 'css-variables' %}
+    {% unless settings.type_primary_font.system? %}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+      {{ settings.type_primary_font | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
+    {% endunless %}
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
+
+    {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+    <script defer src="{{ 'critical.js' | asset_url }}"></script>
+
+
+
+    {% # Social, title, etc. %}
+    {% render 'meta-tags' %}
+
+    {{ content_for_header }}
+  </head>
+
+  <body>
+    {% sections 'header-group' %}
+      <div class="top-main">
+          {{ content_for_layout }}
+      </div>
+    {% sections 'footer-group' %}
+  </body>
+</html>
