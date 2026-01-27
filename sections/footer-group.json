@@ -17,7 +17,8 @@
         "logo_MzJmjV": {
           "type": "logo",
           "settings": {
-            "logo": "shopify://shop_images/Personalised_Baby_Pink_Bear_Cuddle_in_a_Bubble_Dubai_3.webp"
+            "logo": "shopify://shop_images/Personalised_Baby_Pink_Bear_Cuddle_in_a_Bubble_Dubai_3.webp",
+            "logo_width": 150
           }
         },
         "link_list_yfFVT8": {
@@ -28,13 +29,6 @@
           }
         },
         "link_list_yz7HkM": {
-          "type": "link_list",
-          "settings": {
-            "title": "Quick Links",
-            "menu": ""
-          }
-        },
-        "link_list_8BDRyn": {
           "type": "link_list",
           "settings": {
             "title": "Quick Links",
@@ -55,7 +49,6 @@
         "logo_MzJmjV",
         "link_list_yfFVT8",
         "link_list_yz7HkM",
-        "link_list_8BDRyn",
         "apps_payments_PFpAVT"
       ],
       "settings": {
