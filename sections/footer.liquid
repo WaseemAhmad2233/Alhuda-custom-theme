@@ -714,6 +714,9 @@
                 <h2 style="font-size: 40px; opacity: 0.1; line-height: 1; margin: 0; text-transform: uppercase;">{{ shop.name }}</h2>
                 {%endif %}
               </div>
+              <div class="cf_small_description_wapper">
+                {{ block.settings.small_description }}
+              </div>
             </div>
         {% endcase %}
       {% endfor %}
@@ -875,6 +878,11 @@
           "unit": "px",
           "label": "Logo Width",
           "default":150
+        },
+        {
+          "type": "richtext",
+          "id": "small_description",
+          "label": "About"
         }
       ]
     },
