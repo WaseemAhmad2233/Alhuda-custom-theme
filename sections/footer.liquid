@@ -584,7 +584,7 @@
     width: 24px;
     height: 24px;
   }
-
+.cf_logo_container img{width:100%;}
   @media (max-width: 999px) {
     .cf-footer-big-img { width: 100%; }
   }
@@ -709,7 +709,7 @@
             <div class="cf_logo_main_wapper">
               <div class="cf_logo_container">
                 {% if block.settings.logo != blank %}
-                <img src="{{ block.settings.logo | img_url:'master' }}">
+                <img src="{{ block.settings.logo | img_url:'master' }}" style="max-width:{{ block.settings.logo_width }}px;">
                 {% else %}
                 <h2 style="font-size: 40px; opacity: 0.1; line-height: 1; margin: 0; text-transform: uppercase;">{{ shop.name }}</h2>
                 {%endif %}
@@ -865,6 +865,16 @@
           "type": "image_picker",
           "id": "logo",
           "label": "Logo"
+        },
+        {
+          "type": "range",
+          "id": "logo_width",
+          "min": 0,
+          "max": 300,
+          "step": 5,
+          "unit": "px",
+          "label": "Logo Width",
+          "default":150
         }
       ]
     },
