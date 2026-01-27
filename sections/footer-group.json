@@ -18,7 +18,8 @@
           "type": "logo",
           "settings": {
             "logo": "shopify://shop_images/Personalised_Baby_Pink_Bear_Cuddle_in_a_Bubble_Dubai_3.webp",
-            "logo_width": 150
+            "logo_width": 150,
+            "small_description": "<p>Alhudasols is dedicated to refined craftsmanship and meaningful design for everyday living.</p>"
           }
         },
         "link_list_yfFVT8": {
