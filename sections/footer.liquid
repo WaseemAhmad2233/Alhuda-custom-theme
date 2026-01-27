@@ -584,8 +584,7 @@
     width: 24px;
     height: 24px;
   }
-.cf_logo_container img{width:100%;}
-.cf_logo_main_wapper{display: flex;flex-direction: column;gap: 20px;}
+
   @media (max-width: 999px) {
     .cf-footer-big-img { width: 100%; }
   }
@@ -706,31 +705,18 @@
               </div>
             </div>
           </div>
-          {% when 'logo' %}
-            <div class="cf_logo_main_wapper">
-              <div class="cf_logo_container">
-                {% if block.settings.logo != blank %}
-                <img src="{{ block.settings.logo | img_url:'master' }}" style="max-width:{{ block.settings.logo_width }}px;">
-                {% else %}
-                <h2 style="font-size: 40px; opacity: 0.1; line-height: 1; margin: 0; text-transform: uppercase;">{{ shop.name }}</h2>
-                {%endif %}
-              </div>
-              <div class="cf_small_description_wapper">
-                {{ block.settings.small_description }}
-              </div>
-            </div>
         {% endcase %}
       {% endfor %}
     </div>
 
-    {% comment %} <div class="cf-big-logo-container">
+    <div class="cf-big-logo-container">
       {% if section.settings.footer_big_logo != blank %}
         {{ section.settings.footer_big_logo | image_url: width: 2000 | image_tag: class: 'cf-footer-big-img', loading: 'lazy' }}
       {% else %}
         <!-- Placeholder for Big Logo -->
         <h2 style="font-size: 80px; opacity: 0.1; line-height: 1; margin: 0; text-transform: uppercase;">{{ shop.name }}</h2>
       {% endif %}
-    </div> {% endcomment %}
+    </div>
 
     <div class="cf-bottom-bar">
       <div class="cf-copyright">
@@ -858,32 +844,6 @@
           "type": "link_list",
           "id": "menu",
           "label": "Select Menu"
-        }
-      ]
-    },
-    {
-      "type": "logo",
-      "name": "Logo",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "logo",
-          "label": "Logo"
-        },
-        {
-          "type": "range",
-          "id": "logo_width",
-          "min": 0,
-          "max": 300,
-          "step": 5,
-          "unit": "px",
-          "label": "Logo Width",
-          "default":150
-        },
-        {
-          "type": "richtext",
-          "id": "small_description",
-          "label": "About"
         }
       ]
     },
