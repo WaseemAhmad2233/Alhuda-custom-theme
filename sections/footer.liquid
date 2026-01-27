@@ -705,18 +705,28 @@
               </div>
             </div>
           </div>
+          {% when 'logo' %}
+            <div class="cf_logo_main_wapper">
+              <div class="cf_logo_container">
+                {% if block.settings.logo != blank %}
+                <img src="{{ block.settings.logo | img_url:'master' }}">
+                {% else %}
+                <h2 style="font-size: 40px; opacity: 0.1; line-height: 1; margin: 0; text-transform: uppercase;">{{ shop.name }}</h2>
+                {%endif %}
+              </div>
+            </div>
         {% endcase %}
       {% endfor %}
     </div>
 
-    <div class="cf-big-logo-container">
+    {% comment %} <div class="cf-big-logo-container">
       {% if section.settings.footer_big_logo != blank %}
         {{ section.settings.footer_big_logo | image_url: width: 2000 | image_tag: class: 'cf-footer-big-img', loading: 'lazy' }}
       {% else %}
         <!-- Placeholder for Big Logo -->
         <h2 style="font-size: 80px; opacity: 0.1; line-height: 1; margin: 0; text-transform: uppercase;">{{ shop.name }}</h2>
       {% endif %}
-    </div>
+    </div> {% endcomment %}
 
     <div class="cf-bottom-bar">
       <div class="cf-copyright">
@@ -844,6 +854,17 @@
           "type": "link_list",
           "id": "menu",
           "label": "Select Menu"
+        }
+      ]
+    },
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo"
         }
       ]
     },
