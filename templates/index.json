@@ -1,1 +1,50 @@
-{"sections":{"collections_t8HXt8":{"type":"collections","disabled":true,"name":"t:general.collections_grid","settings":{"grid_item_width":"collections--full","grid_gap":10}},"image_with_text_XnELGr":{"type":"image-with-text","blocks":{"content_row_kkXaL8":{"type":"content_row","settings":{"main_image":"shopify:\/\/shop_images\/Balloon-personalised-princess-aurora-dubai.webp","image_position":"right","text_alignment":"left","heading":"Start-up support","text":"<p>Write your detailed product description here.<\/p>"}}},"block_order":["content_row_kkXaL8"],"name":"Image With Text","settings":{"color_scheme":"scheme-c48fb408-4749-458b-8250-28c8f6149c50","pt_desk":40,"pb_desk":40,"pt_mob":30,"pb_mob":30,"desktop_image_alignment":"center","bg_color":"#ffffff","full_width":false,"content_visibility":"both","title_color":"#000000","text_color":"#333333","mobile_layout_type":"slider","mobile_slider_position":"overlap"}}},"order":["collections_t8HXt8","image_with_text_XnELGr"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_with_text_XnELGr": {
+      "type": "image-with-text",
+      "blocks": {
+        "content_row_kkXaL8": {
+          "type": "content_row",
+          "settings": {
+            "main_image": "shopify://shop_images/Balloon-personalised-princess-aurora-dubai.webp",
+            "image_position": "right",
+            "text_alignment": "left",
+            "heading": "Start-up support",
+            "text": "<p>Write your detailed product description here.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "content_row_kkXaL8"
+      ],
+      "name": "Image With Text",
+      "settings": {
+        "color_scheme": "scheme-c48fb408-4749-458b-8250-28c8f6149c50",
+        "pt_desk": 40,
+        "pb_desk": 40,
+        "pt_mob": 30,
+        "pb_mob": 30,
+        "desktop_image_alignment": "center",
+        "bg_color": "#ffffff",
+        "full_width": false,
+        "content_visibility": "both",
+        "title_color": "#000000",
+        "text_color": "#333333",
+        "mobile_layout_type": "slider",
+        "mobile_slider_position": "overlap"
+      }
+    }
+  },
+  "order": [
+    "image_with_text_XnELGr"
+  ]
+}
