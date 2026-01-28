@@ -16,10 +16,10 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/Balloon-personalised-princess-aurora-dubai.webp",
-            "text_position": "center-center",
+            "text_position": "bottom-center",
             "heading": "Welcome",
             "subheading": "",
-            "button_text": "",
+            "button_text": "Shop Now",
             "button_link": ""
           }
         },
@@ -41,7 +41,7 @@
       ],
       "name": "Hero Banner",
       "settings": {
-        "height": 500,
+        "height": 510,
         "content_max_width": 500,
         "text_color": "#ffffff",
         "heading_size": 48,
